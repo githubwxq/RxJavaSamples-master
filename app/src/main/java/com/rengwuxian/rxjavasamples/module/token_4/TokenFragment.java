@@ -35,6 +35,7 @@ public class TokenFragment extends BaseFragment {
 
     @OnClick(R.id.requestBt)
     void upload() {
+        //基本请求都要两次或用flatmap多次请求
         swipeRefreshLayout.setRefreshing(true);
         unsubscribe();
         final FakeApi fakeApi = Network.getFakeApi();
@@ -42,6 +43,8 @@ public class TokenFragment extends BaseFragment {
                 .flatMap(new Func1<FakeToken, Observable<FakeThing>>() {
                     @Override
                     public Observable<FakeThing> call(FakeToken fakeToken) {
+                      //  多次请求 这次求个作为下次请求的参数 很给力
+
                         return fakeApi.getFakeData(fakeToken);
                     }
                 })

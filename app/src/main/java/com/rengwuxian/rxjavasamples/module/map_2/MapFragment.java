@@ -34,15 +34,27 @@ import rx.schedulers.Schedulers;
 public class MapFragment extends BaseFragment {
     private int page = 0;
 
-    @Bind(R.id.pageTv) TextView pageTv;
-    @Bind(R.id.previousPageBt) Button previousPageBt;
-    @Bind(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
-    @Bind(R.id.gridRv) RecyclerView gridRv;
+    @Bind(R.id.pageTv)
+    TextView pageTv;
+    @Bind(R.id.previousPageBt)
+    Button previousPageBt;
+    @Bind(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
+    @Bind(R.id.gridRv)
+    RecyclerView gridRv;
 
     ItemListAdapter adapter = new ItemListAdapter();
-    Observer<List<Item>> observer = new Observer<List<Item>>() {
+
+    // 、、map处理最后想要的和服务器返回不同数据的  中转器 实现对数据的加工处理 gson 获取最迟数据转成的对象
+    // 通过map方法经过包装处理
+    // 给dialog显示 类中包含dialog就行 dialog 回调 和observable 之间通信还是用借口 让observable实现他人的接口 他人干某事时他能响应
+
+
+    // observer实现流水信息 类似handle
+    Observer<List<Item>> observer = new Observer<List<Item>>() { // 可以对observer 进行封装处理写个抽象类处理相同的方法 抽象处理不同的方法 还能q
         @Override
         public void onCompleted() {
+
         }
 
         @Override
@@ -75,15 +87,15 @@ public class MapFragment extends BaseFragment {
         }
     }
 
-    private void loadPage(int page) {
+    private void loadPage(int page) { // 加载 不同页面数据
         swipeRefreshLayout.setRefreshing(true);
         unsubscribe();
         subscription = Network.getGankApi()
                 .getBeauties(10, page)
-                .map(GankBeautyResultToItemsMapper.getInstance()) //单列维护转化
+                .map(GankBeautyResultToItemsMapper.getInstance()) //单列维护转化 就是一个对象 这个对象call方法对数据进行转换
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(observer);
+                .subscribe(observer);// 最后由观察者 在主线程 实现 拿到数据后的处理
     }
 
     @Nullable

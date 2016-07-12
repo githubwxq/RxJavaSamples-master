@@ -28,12 +28,13 @@ import butterknife.OnCheckedChanged;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-
+//一次数据获获取没对数据进行转换
 public class ElementaryFragment extends BaseFragment {
     @Bind(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.gridRv) RecyclerView gridRv;
 
     ZhuangbiListAdapter adapter = new ZhuangbiListAdapter();
+    //获取数据 你需要的数据类型人家给你传 List<ZhuangbiImage>
     Observer<List<ZhuangbiImage>> observer = new Observer<List<ZhuangbiImage>>() {
         @Override
         public void onCompleted() {
@@ -55,9 +56,9 @@ public class ElementaryFragment extends BaseFragment {
     @OnCheckedChanged({R.id.searchRb1, R.id.searchRb2, R.id.searchRb3, R.id.searchRb4})
     void onTagChecked(RadioButton searchRb, boolean checked) {
         if (checked) {
-            unsubscribe();
-            adapter.setImages(null);
-            swipeRefreshLayout.setRefreshing(true);
+            unsubscribe();//取消绑定
+            adapter.setImages(null);//取消数据
+            swipeRefreshLayout.setRefreshing(true);//开始刷新
             search(searchRb.getText().toString());
         }
     }
@@ -77,13 +78,16 @@ public class ElementaryFragment extends BaseFragment {
         ButterKnife.bind(this, view);
 
         gridRv.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+
         gridRv.setAdapter(adapter);
+
         swipeRefreshLayout.setColorSchemeColors(Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW);
         swipeRefreshLayout.setEnabled(false);
 
         return view;
     }
 
+    // 大家都有 dialog布局
     @Override
     protected int getDialogRes() {
         return R.layout.dialog_elementary;

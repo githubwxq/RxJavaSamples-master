@@ -29,10 +29,20 @@ public class ItemListAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+
+
+
         DebounceViewHolder debounceViewHolder = (DebounceViewHolder) holder;
         Item image = images.get(position);
         Glide.with(holder.itemView.getContext()).load(image.imageUrl).into(debounceViewHolder.imageIv);
         debounceViewHolder.descriptionTv.setText(image.description);
+
+
+
+
+
+
+
     }
 
     @Override

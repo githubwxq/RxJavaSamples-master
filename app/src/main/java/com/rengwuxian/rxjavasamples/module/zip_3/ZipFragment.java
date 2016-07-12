@@ -56,6 +56,8 @@ public class ZipFragment extends BaseFragment {
         }
     };
 
+
+    //运用场景
     @OnClick(R.id.zipLoadBt)
     void load() {
         swipeRefreshLayout.setRefreshing(true);
@@ -65,6 +67,7 @@ public class ZipFragment extends BaseFragment {
                 new Func2<List<Item>, List<ZhuangbiImage>, List<Item>>() {
                     @Override
                     public List<Item> call(List<Item> gankItems, List<ZhuangbiImage> zhuangbiImages) {
+                        //组合数据后
                         List<Item> items = new ArrayList<Item>();
                         for (int i = 0; i < gankItems.size() / 2 && i < zhuangbiImages.size(); i++) {
                             items.add(gankItems.get(i * 2));
